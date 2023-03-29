@@ -1,4 +1,3 @@
-import {uuid} from 'uuidv4';
 import {blogsCollection} from "./db/db";
 import {Collection} from "mongodb";
 import {BlogType} from "./types/db-types";
@@ -28,21 +27,8 @@ export class _BlogsRepositories {
         }
     }
 
-    async createBlog(dto: BlogDtoType): Promise<BlogType | null> {
-        const newBlog = {
-            id: uuid(),
-            name: dto.name,
-            description: dto.description,
-            websiteUrl: dto.websiteUrl,
-            createdAt: new Date(),
-            isMembership: false
-        }
-
-        await this.blogsCollection.insertOne(newBlog);
-        const blog = await this.blogsCollection.find({id: newBlog.id}, {projection: {_id: 0}}).next();
-        if (blog) {
-            return blog;
-        } else return null;
+    async createBlog(blog: BlogType): Promise<void> {
+        await this.blogsCollection.insertOne(blog);
     }
 
     async updateBlog(id: string, dto: BlogDtoType): Promise<boolean> {
@@ -64,14 +50,8 @@ export class _BlogsRepositories {
     }
 
     async clearCluster(): Promise<boolean> {
-        try {
-            await this.blogsCollection.deleteMany({})
-            return true
-        } catch (e) {
-            console.log(e)
-            return false
-        }
-
+        await this.blogsCollection.deleteMany({})
+        return true
     }
 }
 

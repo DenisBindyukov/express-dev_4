@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import {auth} from "../middlewares/authMiddleware";
-import BlogsRepositories from "../repositories/blogs-repositories";
+import blogService from "../domain/blogs-service";
 import {
     descriptionValidation,
     inputValidationMiddleware,
@@ -11,13 +11,13 @@ import {BlogDtoType} from "./types/types";
 export const blogsRouter = Router({});
 
 blogsRouter.get('/', async (req: Request, res: Response) => {
-    const blogs = await BlogsRepositories.getBlogs();
+    const blogs = await blogService.getBlogs();
     res.send(blogs);
 });
 
 blogsRouter.get('/:id',
     async (req: Request, res: Response) => {
-        const blog = await BlogsRepositories.getBlogById(req.params.id);
+        const blog = await blogService.getBlogById(req.params.id);
         if (blog) {
             res.status(200).send(blog);
         } else {
@@ -34,7 +34,7 @@ blogsRouter.post('/',
     websiteUrlValidation,
     inputValidationMiddleware,
     async (req: Request<{}, {}, BlogDtoType>, res: Response) => {
-        const newBlog = await BlogsRepositories.createBlog(req.body);
+        const newBlog = await blogService.createBlog(req.body);
         res.status(201).send(newBlog)
     });
 
@@ -45,7 +45,7 @@ blogsRouter.put('/:id',
     websiteUrlValidation,
     inputValidationMiddleware,
     async (req: Request, res: Response) => {
-        const updatedBlog = await BlogsRepositories.updateBlog(req.params.id, req.body)
+        const updatedBlog = await blogService.updateBlog(req.params.id, req.body)
         if (updatedBlog) {
             res.status(204).send()
         } else {
@@ -57,7 +57,7 @@ blogsRouter.put('/:id',
 blogsRouter.delete('/:id',
     auth,
     async (req: Request, res: Response) => {
-        const wasDeleted = await BlogsRepositories.deleteBlog(req.params.id)
+        const wasDeleted = await blogService.deleteBlog(req.params.id)
 
         if (wasDeleted) {
             res.status(204).send()

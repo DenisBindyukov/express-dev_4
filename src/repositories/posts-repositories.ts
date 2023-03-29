@@ -1,15 +1,10 @@
 import {postsCollection} from "./db/db";
 import {PostType} from "./types/db-types";
 import {Collection} from "mongodb";
-import {PostDtoType} from "../routs/types/types";
-import {uuid} from "uuidv4";
-import BlogsRepositories, {_BlogsRepositories} from "./blogs-repositories";
+
 
 class PostsRepositories {
-    constructor(
-        private readonly postsCollection: Collection<PostType>,
-        private readonly blogsRepositories: _BlogsRepositories
-    ) {
+    constructor(private readonly postsCollection: Collection<PostType>) {
     }
 
     async getPosts() {
@@ -21,40 +16,12 @@ class PostsRepositories {
 
     }
 
-    async createPost(dto: PostDtoType): Promise<PostType | null> {
-        const blog = await this.blogsRepositories.getBlogById(dto.blogId);
-
-        if (blog) {
-            const newPost: PostType = {
-                id: uuid(),
-                title: dto.title,
-                shortDescription: dto.shortDescription,
-                content: dto.content,
-                blogId: dto.blogId,
-                blogName: blog.name,
-                createdAt: new Date()
-            }
-            await this.postsCollection.insertOne(newPost)
-            const createdBlog = await this.postsCollection.find(
-                {id: newPost.id},
-                {projection: {_id: 0}}
-            ).next();
-            return createdBlog
-        } else {
-            return null
-        }
+    async createPost(post: PostType): Promise<void> {
+        await this.postsCollection.insertOne(post)
     }
 
-    async updatePost(postId: string, dto: PostDtoType): Promise<boolean | string> {
-        const post = await this.getPost(postId);
-        if (!post) {
-            return false
-        }
-        const updatedPost = {
-            ...post,
-            ...dto
-        }
-        const result = await this.postsCollection.updateOne({id: postId}, {$set: {...updatedPost}});
+    async updatePost(postId: string, post: PostType): Promise<boolean | string> {
+        const result = await this.postsCollection.updateOne({id: postId}, {$set: {...post}});
         if (result.matchedCount) {
             return true
         } else {
@@ -83,4 +50,4 @@ class PostsRepositories {
     }
 }
 
-export default new PostsRepositories(postsCollection, BlogsRepositories)
+export default new PostsRepositories(postsCollection)
