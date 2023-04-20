@@ -10,3 +10,15 @@ export interface PostDtoType {
     content: string,
     blogId: string
 }
+
+export type BlogQueryParamsType = {
+    pageNumber?: number
+    pageSize?: number
+    sortBy?: number
+    sortDirection?: string
+    searchNameTerm?: string | null
+}
+
+export type UrlParamsType = {
+    blogId: string
+}

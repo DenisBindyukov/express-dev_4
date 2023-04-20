@@ -1,7 +1,7 @@
 import {uuid} from "uuidv4";
 import {PostDtoType} from "../routs/types/types";
 import {PostType} from "../repositories/types/db-types";
-import PostsRepositories from "../repositories/posts-repositories";
+import PostsRepositories from "../repositories/posts/posts-repositories";
 import BlogsService from "./blogs-service";
 
 

@@ -6,7 +6,8 @@ import {
     inputValidationMiddleware,
     nameValidation, websiteUrlValidation
 } from "../middlewares/input-validation-middleware";
-import {BlogDtoType} from "./types/types";
+import {BlogDtoType, BlogQueryParamsType, UrlParamsType} from "./types/types";
+
 
 export const blogsRouter = Router({});
 
@@ -15,9 +16,20 @@ blogsRouter.get('/', async (req: Request, res: Response) => {
     res.send(blogs);
 });
 
-blogsRouter.get('/:id',
-    async (req: Request, res: Response) => {
-        const blog = await blogService.getBlogById(req.params.id);
+blogsRouter.get('/:blogId',
+    async (req: Request<UrlParamsType, any, any, BlogQueryParamsType>, res: Response) => {
+        const blog = await blogService.getBlogById(req.params.blogId);
+        if (blog) {
+            res.status(200).send(blog);
+        } else {
+            res.status(404).send();
+        }
+
+    });
+
+blogsRouter.get('/:blogId/posts',
+    async (req: Request<UrlParamsType, any, any, BlogQueryParamsType>, res: Response) => {
+        const blog = await blogService.getBlogById(req.params.blogId);
         if (blog) {
             res.status(200).send(blog);
         } else {
