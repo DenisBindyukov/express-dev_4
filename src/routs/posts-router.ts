@@ -1,5 +1,4 @@
 import {Request, Response, Router} from "express";
-import {PostDtoType} from "./types/types";
 import postsService from "../domain/post-service";
 import {auth} from "../middlewares/authMiddleware";
 import {
@@ -9,6 +8,7 @@ import {
     shortDescriptionValidation,
     titleValidation
 } from "../middlewares/input-validation-middleware";
+import {PostDtoType} from "../repositories/posts/types/types";
 
 export const postsRouter = Router({});
 

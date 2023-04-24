@@ -1,7 +1,7 @@
 import {blogsCollection} from "../db/db";
 import {Collection} from "mongodb";
 import {BlogType} from "../types/db-types";
-import {BlogDtoType} from "../../routs/types/types";
+import {BlogDtoType} from "./types/types";
 
 export class _BlogsRepositories {
     constructor(private readonly blogsCollection: Collection<BlogType>) {

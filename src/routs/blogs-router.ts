@@ -4,15 +4,23 @@ import blogService from "../domain/blogs-service";
 import {
     descriptionValidation,
     inputValidationMiddleware,
-    nameValidation, websiteUrlValidation
+    nameValidation,
+    websiteUrlValidation
 } from "../middlewares/input-validation-middleware";
-import {BlogDtoType, BlogQueryParamsType, UrlParamsType} from "./types/types";
+import blogsQueryRepositories from "../repositories/blog/query-repositories";
+import {ASC, BlogDtoType, BlogQueryParamsType, SortType, UrlParamsType} from "../repositories/blog/types/types";
 
 
 export const blogsRouter = Router({});
 
-blogsRouter.get('/', async (req: Request, res: Response) => {
-    const blogs = await blogService.getBlogs();
+blogsRouter.get('/', async (req: Request<any, any, any, BlogQueryParamsType>, res: Response) => {
+    const blogs = await blogsQueryRepositories.getBlogs(
+        req.query?.pageNumber && Number(req.query.pageNumber),
+        req.query?.pageSize && Number(req.query.pageSize),
+        req.query?.searchNameTerm && req.query.searchNameTerm,
+        req.query?.sortBy && req.query.sortBy,
+        req.query?.sortDirection === ASC ? SortType.asc : SortType.desc,
+    );
     res.send(blogs);
 });
 

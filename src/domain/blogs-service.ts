@@ -1,7 +1,7 @@
 import {uuid} from 'uuidv4';
-import {BlogDtoType} from "../routs/types/types";
 import {BlogType} from "../repositories/types/db-types";
 import BlogsRepositories from "../repositories/blog/blogs-repositories";
+import {BlogDtoType} from "../repositories/blog/types/types";
 
 
 export class _BlogsService {
