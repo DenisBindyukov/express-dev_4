@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from "express-validator";
-import blogsRepositories from '../repositories/blog/blogs-repositories'
+import blogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
 
 export function inputValidationMiddleware(req: Request, res: Response, next: NextFunction) {
     const errors = validationResult(req);
@@ -43,9 +43,11 @@ export const contentValidation = body('content')
     .isLength({min: 1, max: 1000})
     .withMessage('field is required and max length 1000 symbols')
 export const blogIdValidation = body('blogId').custom(async (value) => {
-    const blog = await blogsRepositories.getBlogById(value)
+    console.log(value)
+    const blog = await blogsQueryRepositories.getBlogById(value)
+    console.log(value)
     if (!blog) {
-        throw new Error('blog not found')
+        throw new Error('blogs not found')
     } else {
         return true
     }

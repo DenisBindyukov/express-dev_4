@@ -1,19 +1,16 @@
 import {uuid} from 'uuidv4';
 import {BlogType} from "../repositories/types/db-types";
-import BlogsRepositories from "../repositories/blog/blogs-repositories";
-import {BlogDtoType} from "../repositories/blog/types/types";
+import BlogsRepositories from "../repositories/blogs/blogs-repositories/blogs-repositories";
+import BlogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
+import {BlogDtoType} from "../repositories/blogs/blogs-repositories/types/types";
+
 
 
 export class _BlogsService {
-    constructor(private readonly blogsCollection: typeof BlogsRepositories) {
-    }
-
-    async getBlogs(): Promise<BlogType [] | null> {
-        return await this.blogsCollection.getBlogs()
-    }
-
-    async getBlogById(id: string): Promise<BlogType | null> {
-        return await this.blogsCollection.getBlogById(id)
+    constructor(
+        private readonly blogsCollection: typeof BlogsRepositories,
+        private readonly blogsQueryRepositories: typeof BlogsQueryRepositories
+    ) {
     }
 
     async createBlog(dto: BlogDtoType): Promise<BlogType | null> {
@@ -27,7 +24,7 @@ export class _BlogsService {
         }
 
         await this.blogsCollection.createBlog(newBlog);
-        return await this.blogsCollection.getBlogById(newBlog.id);
+        return await this.blogsQueryRepositories.getBlogById(newBlog.id);
     }
 
     async updateBlog(id: string, dto: BlogDtoType): Promise<boolean> {
@@ -45,4 +42,4 @@ export class _BlogsService {
     }
 }
 
-export default new _BlogsService(BlogsRepositories);
+export default new _BlogsService(BlogsRepositories, BlogsQueryRepositories);

@@ -1,19 +1,10 @@
-import {postsCollection} from "../db/db";
-import {PostType} from "../types/db-types";
+import {postsCollection} from "../../db/db";
+import {PostType} from "../../types/db-types";
 import {Collection} from "mongodb";
 
 
 class PostsRepositories {
     constructor(private readonly postsCollection: Collection<PostType>) {
-    }
-
-    async getPosts(): Promise<PostType[]> {
-        return this.postsCollection.find({}, {projection: {_id: 0}}).toArray()
-    }
-
-    async getPost(postId: string): Promise<PostType | null> {
-        return await this.postsCollection.find({id: postId}, {projection: {_id: 0}}).next()
-
     }
 
     async createPost(post: PostType): Promise<void> {

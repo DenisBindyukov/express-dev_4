@@ -1,30 +1,10 @@
-import {blogsCollection} from "../db/db";
+import {blogsCollection} from "../../db/db";
 import {Collection} from "mongodb";
-import {BlogType} from "../types/db-types";
+import {BlogType} from "../../types/db-types";
 import {BlogDtoType} from "./types/types";
 
 export class _BlogsRepositories {
     constructor(private readonly blogsCollection: Collection<BlogType>) {
-    }
-
-    async getBlogs(): Promise<BlogType [] | null> {
-        try {
-            const res = this.blogsCollection.find({}, {projection: {_id: 0}}).toArray();
-            return res;
-        } catch (e) {
-            console.log(e);
-            return null;
-        }
-
-    }
-
-    async getBlogById(id: string): Promise<BlogType | null> {
-        const res = await this.blogsCollection.find({id}, {projection: {_id: 0}}).next();
-        if (res) {
-            return res;
-        } else {
-            return null;
-        }
     }
 
     async createBlog(blog: BlogType): Promise<void> {

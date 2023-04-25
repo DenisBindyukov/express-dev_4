@@ -1,27 +1,21 @@
 import {uuid} from "uuidv4";
 import {PostType} from "../repositories/types/db-types";
-import PostsRepositories from "../repositories/posts/posts-repositories";
-import BlogsService from "./blogs-service";
-import {PostDtoType} from "../repositories/posts/types/types";
+import PostsRepository from "../repositories/posts/posts-repositories/posts-repositories";
+import BlogsQueryRepository from "../repositories/blogs/query-repositories/query-repositories";
+import PostsQueryRepository from "../repositories/posts/query-repositories/query-repositories";
+import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
 
 
 class PostsService {
     constructor(
-        private readonly postsRepositories: typeof PostsRepositories,
-        private readonly blogsService: typeof BlogsService,
+        private readonly postsRepository: typeof PostsRepository,
+        private readonly postsQueryRepository: typeof PostsQueryRepository,
+        private readonly blogsQueryRepository: typeof BlogsQueryRepository,
     ) {
     }
 
-    async getPosts() {
-        return await this.postsRepositories.getPosts()
-    }
-
-    async getPost(postId: string) {
-        return await this.postsRepositories.getPost(postId)
-    }
-
     async createPost(dto: PostDtoType): Promise<PostType | null> {
-        const blog = await this.blogsService.getBlogById(dto.blogId);
+        const blog = await this.blogsQueryRepository.getBlogById(dto.blogId);
 
         if (blog) {
             const newPost: PostType = {
@@ -33,15 +27,15 @@ class PostsService {
                 blogName: blog.name,
                 createdAt: new Date()
             }
-            await this.postsRepositories.createPost(newPost)
-            return await this.postsRepositories.getPost(newPost.id)
+            await this.postsRepository.createPost(newPost)
+            return await this.postsQueryRepository.getPost(newPost.id)
         } else {
             return null
         }
     }
 
     async updatePost(postId: string, dto: PostDtoType): Promise<boolean | string> {
-        const post = await this.getPost(postId);
+        const post = await this.postsQueryRepository.getPost(postId);
         if (!post) {
             return false
         }
@@ -49,17 +43,17 @@ class PostsService {
             ...post,
             ...dto
         }
-        return await this.postsRepositories.updatePost(postId,updatedPost)
+        return await this.postsRepository.updatePost(postId, updatedPost)
     }
 
     async deletePost(postId: string): Promise<boolean> {
-        return await this.postsRepositories.deletePost(postId)
+        return await this.postsRepository.deletePost(postId)
     }
 
     async clearCluster(): Promise<boolean> {
-      return await this.postsRepositories.clearCluster()
+        return await this.postsRepository.clearCluster()
 
     }
 }
 
-export default new PostsService(PostsRepositories, BlogsService)
+export default new PostsService(PostsRepository, PostsQueryRepository, BlogsQueryRepository)
