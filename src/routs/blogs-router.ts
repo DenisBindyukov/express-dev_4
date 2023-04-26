@@ -49,7 +49,7 @@ blogsRouter.get('/:blogId/posts',
                 req.query?.sortBy && req.query.sortBy.trim(),
                 req.query?.sortDirection?.trim() === ASC ? SortType.asc : SortType.desc,
             );
-            res.status(201).send(posts);
+            res.status(200).send(posts);
             return;
         }
         res.status(404).send('Blog not found');
