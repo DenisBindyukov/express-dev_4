@@ -11,7 +11,7 @@ import {
 } from "../middlewares/input-validation-middleware";
 import {ASC} from "../repositories/types/constants";
 import {PaginationQueryParamsType, SortType} from "../repositories/types/ownTypes";
-import {BlogDtoType, BlogUrlParamsType} from "./types/types";
+import {BlogDtoType, BlogUrlParamsType} from "./types/blog.types";
 
 
 export const blogsRouter = Router({});
@@ -62,12 +62,14 @@ blogsRouter.post('/:blogId/posts',
     contentValidation,
     inputValidationMiddleware,
     async (req: Request, res: Response) => {
-        console.log(req.params.blogId)
-        const post = await blogService.createPostByBlogId({...req.body, blogId: req.params.blogId});
-        if (post) {
-            res.status(200).send(post);
-            return;
+        if (req.params?.blogId) {
+            const post = await blogService.createPostByBlogId({...req.body, blogId: req.params.blogId});
+            if (post) {
+                res.status(200).send(post);
+                return;
+            }
         }
+
         res.status(404).send('Blog not found');
     });
 

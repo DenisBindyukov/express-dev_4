@@ -4,7 +4,7 @@ import BlogsRepositories from "../repositories/blogs/blogs-repositories/blogs-re
 import BlogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
 import PostsService from './post-service';
 import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
-import {BlogDtoType} from "../routs/types/types";
+import {BlogDtoType} from "../routs/types/blog.types";
 
 
 export class _BlogsService {

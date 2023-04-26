@@ -15,7 +15,7 @@ class PostsService {
     }
 
     async createPost(dto: PostDtoType): Promise<PostType | null> {
-        const blog = await this.blogsQueryRepository.getBlogById(dto.blogId);
+        const blog = await this.blogsQueryRepository.getBlogById(dto.blogId!);
 
         if (blog) {
             const newPost: PostType = {
@@ -23,7 +23,7 @@ class PostsService {
                 title: dto.title,
                 shortDescription: dto.shortDescription,
                 content: dto.content,
-                blogId: dto.blogId,
+                blogId: dto.blogId!,
                 blogName: blog.name,
                 createdAt: new Date()
             }
