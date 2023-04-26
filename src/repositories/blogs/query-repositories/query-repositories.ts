@@ -34,7 +34,7 @@ export class BlogsQueryRepositories {
         const {countItems, sortField} = paginationHandler(pageNumber, pageSize, sortBy, sortDirection)
         const findNameTerm = searchNameTerm ? {name: {$regex: searchNameTerm, $options: 'i'}} : {}
 
-        const count = await this.blogsCollection.countDocuments({});
+        const count = await this.blogsCollection.countDocuments(findNameTerm);
         const blogs = await this.blogsCollection.find(findNameTerm, {projection: {_id: 0}})
             .sort(sortField)
             .skip(countItems)
