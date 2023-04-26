@@ -3,14 +3,15 @@ import {auth} from "../middlewares/authMiddleware";
 import blogService from "../domain/blogs-service";
 import blogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
 import {
+    contentValidation,
     descriptionValidation,
     inputValidationMiddleware,
-    nameValidation,
+    nameValidation, shortDescriptionValidation, titleValidation,
     websiteUrlValidation
 } from "../middlewares/input-validation-middleware";
-import {BlogDtoType, BlogUrlParamsType} from "../repositories/blogs/blogs-repositories/types/types";
 import {ASC} from "../repositories/types/constants";
 import {PaginationQueryParamsType, SortType} from "../repositories/types/ownTypes";
+import {BlogDtoType, BlogUrlParamsType} from "./types/types";
 
 
 export const blogsRouter = Router({});
@@ -49,6 +50,22 @@ blogsRouter.get('/:blogId/posts',
                 req.query?.sortDirection?.trim() === ASC ? SortType.asc : SortType.desc,
             );
             res.status(200).send(posts);
+            return;
+        }
+        res.status(404).send('Blog not found');
+    });
+
+blogsRouter.post('/:blogId/posts',
+    auth,
+    titleValidation,
+    shortDescriptionValidation,
+    contentValidation,
+    inputValidationMiddleware,
+    async (req: Request, res: Response) => {
+        console.log(req.params.blogId)
+        const post = await blogService.createPostByBlogId({...req.body, blogId: req.params.blogId});
+        if (post) {
+            res.status(200).send(post);
             return;
         }
         res.status(404).send('Blog not found');

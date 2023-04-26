@@ -1,15 +1,17 @@
 import {uuid} from 'uuidv4';
-import {BlogType} from "../repositories/types/db-types";
+import {BlogType, PostType} from "../repositories/types/db-types";
 import BlogsRepositories from "../repositories/blogs/blogs-repositories/blogs-repositories";
 import BlogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
-import {BlogDtoType} from "../repositories/blogs/blogs-repositories/types/types";
-
+import PostsService from './post-service';
+import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
+import {BlogDtoType} from "../routs/types/types";
 
 
 export class _BlogsService {
     constructor(
         private readonly blogsCollection: typeof BlogsRepositories,
-        private readonly blogsQueryRepositories: typeof BlogsQueryRepositories
+        private readonly blogsQueryRepositories: typeof BlogsQueryRepositories,
+        private readonly postsService: typeof PostsService,
     ) {
     }
 
@@ -27,6 +29,10 @@ export class _BlogsService {
         return await this.blogsQueryRepositories.getBlogById(newBlog.id);
     }
 
+    async createPostByBlogId(dto: PostDtoType): Promise<PostType | null> {
+       return await this.postsService.createPost(dto);
+    }
+
     async updateBlog(id: string, dto: BlogDtoType): Promise<boolean> {
         return await this.blogsCollection.updateBlog(id, dto);
 
@@ -42,4 +48,4 @@ export class _BlogsService {
     }
 }
 
-export default new _BlogsService(BlogsRepositories, BlogsQueryRepositories);
+export default new _BlogsService(BlogsRepositories, BlogsQueryRepositories, PostsService);

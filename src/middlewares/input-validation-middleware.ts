@@ -43,9 +43,7 @@ export const contentValidation = body('content')
     .isLength({min: 1, max: 1000})
     .withMessage('field is required and max length 1000 symbols')
 export const blogIdValidation = body('blogId').custom(async (value) => {
-    console.log(value)
     const blog = await blogsQueryRepositories.getBlogById(value)
-    console.log(value)
     if (!blog) {
         throw new Error('blogs not found')
     } else {
