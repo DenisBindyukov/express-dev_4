@@ -65,7 +65,7 @@ blogsRouter.post('/:blogId/posts',
         if (req.params?.blogId) {
             const post = await blogService.createPostByBlogId({...req.body, blogId: req.params.blogId});
             if (post) {
-                res.status(200).send(post);
+                res.status(201).send(post);
                 return;
             }
         }
