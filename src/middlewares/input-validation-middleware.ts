@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from "express-validator";
-import blogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
+import blogsQueryRepositories from "../repositories/blogs/query-repositories/query-repository";
 
 export function inputValidationMiddleware(req: Request, res: Response, next: NextFunction) {
     const errors = validationResult(req);

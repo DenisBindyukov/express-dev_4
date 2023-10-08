@@ -1,8 +1,8 @@
 import {uuid} from "uuidv4";
-import {PostType} from "../repositories/types/db-types";
-import PostsRepository from "../repositories/posts/posts-repositories/posts-repositories";
-import BlogsQueryRepository from "../repositories/blogs/query-repositories/query-repositories";
-import PostsQueryRepository from "../repositories/posts/query-repositories/query-repositories";
+import {PostDBType} from "../db/types/db-types";
+import PostsRepository from "../repositories/posts/posts-repositories/posts-repository";
+import BlogsQueryRepository from "../repositories/blogs/query-repositories/query-repository";
+import PostsQueryRepository from "../repositories/posts/query-repositories/query-repository";
 import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
 
 
@@ -14,11 +14,11 @@ class PostsService {
     ) {
     }
 
-    async createPost(dto: PostDtoType): Promise<PostType | null> {
+    async createPost(dto: PostDtoType): Promise<PostDBType | null> {
         const blog = await this.blogsQueryRepository.getBlogById(dto.blogId!);
 
         if (blog) {
-            const newPost: PostType = {
+            const newPost: PostDBType = {
                 id: uuid(),
                 title: dto.title,
                 shortDescription: dto.shortDescription,

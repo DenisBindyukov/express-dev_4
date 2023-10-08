@@ -1,6 +1,6 @@
-import {PostType} from "../../../types/db-types";
+import {PostDBType} from "../../../../db/types/db-types";
 
 export interface PostsAndCountByBlogIdResponseType {
     count: number,
-    items: PostType[]
+    items: PostDBType[]
 }

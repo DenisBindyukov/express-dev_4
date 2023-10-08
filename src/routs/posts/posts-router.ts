@@ -1,17 +1,17 @@
 import {Request, Response, Router} from "express";
-import postsService from "../domain/post-service";
-import postsQueryRepository from "../repositories/posts/query-repositories/query-repositories";
-import {auth} from "../middlewares/authMiddleware";
+import postsService from "../../domain/post-service";
+import postsQueryRepository from "../../repositories/posts/query-repositories/query-repository";
+import {auth} from "../../middlewares/authMiddleware";
 import {
     blogIdValidation,
     contentValidation,
     inputValidationMiddleware,
     shortDescriptionValidation,
     titleValidation
-} from "../middlewares/input-validation-middleware";
-import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
-import {PaginationQueryParamsType, SortType} from "../repositories/types/ownTypes";
-import {ASC} from "../repositories/types/constants";
+} from "../../middlewares/input-validation-middleware";
+import {PostDtoType} from "../../repositories/posts/posts-repositories/types/types";
+import {PaginationQueryParamsType, SortType} from "../blogs/types/pagination-types";
+import {ASC} from "../blogs/types/constants";
 
 export const postsRouter = Router({});
 

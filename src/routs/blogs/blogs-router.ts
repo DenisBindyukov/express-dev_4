@@ -1,16 +1,16 @@
 import {Request, Response, Router} from "express";
-import {auth} from "../middlewares/authMiddleware";
-import blogService from "../domain/blogs-service";
-import blogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
+import {auth} from "../../middlewares/authMiddleware";
+import blogService from "../../domain/blogs-service";
+import blogsQueryRepositories from "../../repositories/blogs/query-repositories/query-repository";
 import {
     contentValidation,
     descriptionValidation,
     inputValidationMiddleware,
     nameValidation, shortDescriptionValidation, titleValidation,
     websiteUrlValidation
-} from "../middlewares/input-validation-middleware";
-import {ASC} from "../repositories/types/constants";
-import {PaginationQueryParamsType, SortType} from "../repositories/types/ownTypes";
+} from "../../middlewares/input-validation-middleware";
+import {ASC} from "./types/constants";
+import {PaginationQueryParamsType, SortType} from "./types/pagination-types";
 import {BlogDtoType, BlogUrlParamsType} from "./types/blog.types";
 
 

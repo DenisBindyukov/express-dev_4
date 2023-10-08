@@ -1,14 +1,14 @@
-import {blogsCollection} from "../../db/db";
+import {blogsCollection} from "../../../db/db";
 import {Collection} from "mongodb";
-import {BlogType} from "../../types/db-types";
-import {BlogDtoType} from "../../../routs/types/blog.types";
+import {BlogDBType} from "../../../db/types/db-types";
+import {BlogDtoType} from "../../../routs/blogs/types/blog.types";
 
 
 export class _BlogsRepositories {
-    constructor(private readonly blogsCollection: Collection<BlogType>) {
+    constructor(private readonly blogsCollection: Collection<BlogDBType>) {
     }
 
-    async createBlog(blog: BlogType): Promise<void> {
+    async createBlog(blog: BlogDBType): Promise<void> {
         await this.blogsCollection.insertOne(blog);
     }
 

@@ -1,10 +1,10 @@
 import {uuid} from 'uuidv4';
-import {BlogType, PostType} from "../repositories/types/db-types";
-import BlogsRepositories from "../repositories/blogs/blogs-repositories/blogs-repositories";
-import BlogsQueryRepositories from "../repositories/blogs/query-repositories/query-repositories";
+import {BlogDBType, PostDBType} from "../db/types/db-types";
+import BlogsRepositories from "../repositories/blogs/blogs-repositories/blogs-repository";
+import BlogsQueryRepositories from "../repositories/blogs/query-repositories/query-repository";
 import PostsService from './post-service';
 import {PostDtoType} from "../repositories/posts/posts-repositories/types/types";
-import {BlogDtoType} from "../routs/types/blog.types";
+import {BlogDtoType} from "../routs/blogs/types/blog.types";
 
 
 export class _BlogsService {
@@ -15,7 +15,7 @@ export class _BlogsService {
     ) {
     }
 
-    async createBlog(dto: BlogDtoType): Promise<BlogType | null> {
+    async createBlog(dto: BlogDtoType): Promise<BlogDBType | null> {
         const newBlog = {
             id: uuid(),
             name: dto.name,
@@ -29,7 +29,7 @@ export class _BlogsService {
         return await this.blogsQueryRepositories.getBlogById(newBlog.id);
     }
 
-    async createPostByBlogId(dto: PostDtoType): Promise<PostType | null> {
+    async createPostByBlogId(dto: PostDtoType): Promise<PostDBType | null> {
        return await this.postsService.createPost(dto);
     }
 

@@ -1,17 +1,17 @@
-import {postsCollection} from "../../db/db";
-import {PostType} from "../../types/db-types";
+import {postsCollection} from "../../../db/db";
+import {PostDBType} from "../../../db/types/db-types";
 import {Collection} from "mongodb";
 
 
-class PostsRepositories {
-    constructor(private readonly postsCollection: Collection<PostType>) {
+class PostsRepository {
+    constructor(private readonly postsCollection: Collection<PostDBType>) {
     }
 
-    async createPost(post: PostType): Promise<void> {
+    async createPost(post: PostDBType): Promise<void> {
         await this.postsCollection.insertOne(post)
     }
 
-    async updatePost(postId: string, post: PostType): Promise<boolean | string> {
+    async updatePost(postId: string, post: PostDBType): Promise<boolean | string> {
         const result = await this.postsCollection.updateOne({id: postId}, {$set: {...post}});
         if (result.matchedCount) {
             return true
@@ -41,4 +41,4 @@ class PostsRepositories {
     }
 }
 
-export default new PostsRepositories(postsCollection)
+export default new PostsRepository(postsCollection)

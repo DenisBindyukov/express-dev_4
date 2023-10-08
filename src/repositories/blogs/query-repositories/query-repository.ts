@@ -1,19 +1,19 @@
-import {blogsCollection} from "../../db/db";
+import {blogsCollection} from "../../../db/db";
 import {Collection} from "mongodb";
-import PostsQueryRepositories from '../../posts/query-repositories/query-repositories';
-import {PaginationType} from "../../types/ownTypes";
-import {BlogType, PostType} from "../../types/db-types";
-import {DEFAULT_SORT_FIELD} from "../../types/constants";
+import PostsQueryRepositories from '../../posts/query-repositories/query-repository';
+import {PaginationType} from "../../../routs/blogs/types/pagination-types";
+import {BlogDBType, PostDBType} from "../../../db/types/db-types";
+import {DEFAULT_SORT_FIELD} from "../../../routs/blogs/types/constants";
 import {paginationHandler} from "../../../utils/paginationHandler";
 
 export class BlogsQueryRepositories {
     constructor(
-        private readonly blogsCollection: Collection<BlogType>,
+        private readonly blogsCollection: Collection<BlogDBType>,
         private readonly postsQueryRepositories: typeof PostsQueryRepositories
     ) {
     }
 
-    async getBlogById(id: string): Promise<BlogType | null> {
+    async getBlogById(id: string): Promise<BlogDBType | null> {
         const res = await this.blogsCollection.find({id}, {projection: {_id: 0}}).next();
         if (res) {
             return res;
@@ -28,7 +28,7 @@ export class BlogsQueryRepositories {
         searchNameTerm: string | null = null,
         sortBy: string = DEFAULT_SORT_FIELD,
         sortDirection: number
-    ): Promise<PaginationType<BlogType[]>> {
+    ): Promise<PaginationType<BlogDBType[]>> {
         //sort -1 по убыванию, 1 по возрастанию
 
         const {countItems, sortField} = paginationHandler(pageNumber, pageSize, sortBy, sortDirection)
@@ -56,7 +56,7 @@ export class BlogsQueryRepositories {
         pageSize: number = 10,
         sortBy: string = DEFAULT_SORT_FIELD,
         sortDirection: number
-    ): Promise<PaginationType<PostType[]>> {
+    ): Promise<PaginationType<PostDBType[]>> {
 
         const {countItems, sortField} = paginationHandler(pageNumber, pageSize, sortBy, sortDirection)
         const res = await this.postsQueryRepositories.getPostsAndCountByBlogId(blogId, sortField, countItems, pageSize);

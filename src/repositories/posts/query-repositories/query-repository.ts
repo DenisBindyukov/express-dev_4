@@ -1,14 +1,14 @@
-import {postsCollection} from "../../db/db";
-import {PostType} from "../../types/db-types";
+import {postsCollection} from "../../../db/db";
+import {PostDBType} from "../../../db/types/db-types";
 import {Collection} from "mongodb";
 import {PostsAndCountByBlogIdResponseType} from "./types/types";
-import {PaginationType, SortFieldType} from "../../types/ownTypes";
-import {DEFAULT_SORT_FIELD} from "../../types/constants";
+import {PaginationType, SortFieldType} from "../../../routs/blogs/types/pagination-types";
+import {DEFAULT_SORT_FIELD} from "../../../routs/blogs/types/constants";
 import {paginationHandler} from "../../../utils/paginationHandler";
 
 
 class PostsQueryRepositories {
-    constructor(private readonly postsCollection: Collection<PostType>) {
+    constructor(private readonly postsCollection: Collection<PostDBType>) {
     }
 
     async getPosts(
@@ -17,7 +17,7 @@ class PostsQueryRepositories {
         searchNameTerm: string | null = null,
         sortBy: string = DEFAULT_SORT_FIELD,
         sortDirection: number
-    ): Promise<PaginationType<PostType[]>> {
+    ): Promise<PaginationType<PostDBType[]>> {
         const {countItems, sortField} = paginationHandler(pageNumber, pageSize, sortBy, sortDirection);
 
         const count = await this.postsCollection.countDocuments();
@@ -36,7 +36,7 @@ class PostsQueryRepositories {
         };
     }
 
-    async getPost(postId: string): Promise<PostType | null> {
+    async getPost(postId: string): Promise<PostDBType | null> {
         return await this.postsCollection.find({id: postId}, {projection: {_id: 0}}).next()
 
     }

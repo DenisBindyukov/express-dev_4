@@ -1,4 +1,4 @@
-import {PaginationHandlerResponseType, SortFieldType} from "../repositories/types/ownTypes";
+import {PaginationHandlerResponseType, SortFieldType} from "../routs/blogs/types/pagination-types";
 
 export function paginationHandler(
     pageNumber: number,
