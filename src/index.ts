@@ -1,7 +1,8 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
-import {blogsRouter} from "./routs/blogs/blogs-router";
 import {runDb} from "./db/db";
+import {blogsRouter} from "./routs/blogs/blogs-router";
 import {postsRouter} from "./routs/posts/posts-router";
 import {testingRouter} from "./routs/testing-alll-data";
 import {userRouter} from "./routs/users/user-router";
@@ -9,6 +10,7 @@ import {userRouter} from "./routs/users/user-router";
 const app = express();
 const port = process.env.PORT || 5002;
 
+app.use(cors());
 const jsonParserMiddleware = bodyParser.json();
 app.use(jsonParserMiddleware);
 

@@ -6,7 +6,7 @@ import {BlogDBType, PostDBType} from "../../../db/types/db-types";
 import {DEFAULT_SORT_FIELD} from "../../../routs/blogs/types/constants";
 import {paginationHandler} from "../../../utils/paginationHandler";
 
-export class BlogsQueryRepositories {
+export class BlogsQueryRepository {
     constructor(
         private readonly blogsCollection: Collection<BlogDBType>,
         private readonly postsQueryRepositories: typeof PostsQueryRepositories
@@ -71,4 +71,4 @@ export class BlogsQueryRepositories {
     }
 }
 
-export default new BlogsQueryRepositories(blogsCollection, PostsQueryRepositories);
+export default new BlogsQueryRepository(blogsCollection, PostsQueryRepositories);

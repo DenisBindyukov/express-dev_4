@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import postsService from "../../domain/post-service";
 import postsQueryRepository from "../../repositories/posts/query-repositories/query-repository";
-import {auth} from "../../middlewares/authMiddleware";
+import {basicAuth} from "../../middlewares/authMiddleware";
 import {
     blogIdValidation,
     contentValidation,
@@ -39,7 +39,7 @@ postsRouter.get('/:id',
 
 
 postsRouter.post('/',
-    auth,
+    basicAuth,
     blogIdValidation,
     titleValidation,
     shortDescriptionValidation,
@@ -52,7 +52,7 @@ postsRouter.post('/',
     });
 
 postsRouter.put('/:id',
-    auth,
+    basicAuth,
     blogIdValidation,
     titleValidation,
     shortDescriptionValidation,
@@ -69,7 +69,7 @@ postsRouter.put('/:id',
 
 
 postsRouter.delete('/:id',
-    auth,
+    basicAuth,
     async (req: Request<{ id: string }>, res: Response) => {
         const postWasDelete = await postsService.deletePost(req.params.id);
         if (postWasDelete) {

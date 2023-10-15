@@ -8,7 +8,7 @@ const credentials = {
 let data = `${credentials.login}:${credentials.password}`;
 let base64data =  Buffer.from(data, 'utf-8').toString('base64');
 
-export let auth = (req: Request<any,any,any,any>, res: Response, next: NextFunction) => {
+export let basicAuth = (req: Request<any,any,any,any>, res: Response, next: NextFunction) => {
     let authHeader = req.headers.authorization;
     if (!authHeader) {
         res.send(401)

@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {auth} from "../../middlewares/authMiddleware";
+import {basicAuth} from "../../middlewares/authMiddleware";
 import blogService from "../../domain/blogs-service";
 import blogsQueryRepositories from "../../repositories/blogs/query-repositories/query-repository";
 import {
@@ -35,7 +35,6 @@ blogsRouter.get('/:blogId',
         } else {
             res.status(404).send();
         }
-
     });
 
 blogsRouter.get('/:blogId/posts',
@@ -56,7 +55,7 @@ blogsRouter.get('/:blogId/posts',
     });
 
 blogsRouter.post('/:blogId/posts',
-    auth,
+    basicAuth,
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
@@ -74,7 +73,7 @@ blogsRouter.post('/:blogId/posts',
     });
 
 blogsRouter.post('/',
-    auth,
+    basicAuth,
     nameValidation,
     descriptionValidation,
     websiteUrlValidation,
@@ -85,7 +84,7 @@ blogsRouter.post('/',
     });
 
 blogsRouter.put('/:id',
-    auth,
+    basicAuth,
     nameValidation,
     descriptionValidation,
     websiteUrlValidation,
@@ -101,7 +100,7 @@ blogsRouter.put('/:id',
 
 
 blogsRouter.delete('/:id',
-    auth,
+    basicAuth,
     async (req: Request, res: Response) => {
         const wasDeleted = await blogService.deleteBlog(req.params.id)
 

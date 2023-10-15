@@ -2,7 +2,7 @@ import {ObjectId} from "mongodb";
 
 export interface BaseDBType {
     _id?: ObjectId;
-    createdDate?: Date;
+    createdAt?: Date;
 }
 
 export interface BlogDBType  extends BaseDBType{
@@ -25,8 +25,7 @@ export interface PostDBType extends BaseDBType{
 }
 
 export interface UserDBType extends BaseDBType{
-    userName: string
+    login: string
     email: string
     passwordHash: string
-    passwordSalt: string
 }

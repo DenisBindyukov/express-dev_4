@@ -2,29 +2,34 @@ import {CreatUserDto} from "../routs/users/types/user.types";
 import UsersRepository from '../repositories/user/users-repositories/users-repository'
 import bcrypt from 'bcrypt'
 import {UserDBType} from "../db/types/db-types";
+import {ErrorViewType} from "../repositories/user/view-model/error-view-model.type";
+import { ObjectId } from "mongodb";
 
 class UsersService {
     constructor(private readonly usersRepository: typeof UsersRepository) {
     }
 
-    async creatUser(data: CreatUserDto): Promise<any> {
-        const passwordSalt = await bcrypt.genSalt(15);
-        const passwordHash = await this._generateHash(data.password, passwordSalt);
+    async creatUser(data: CreatUserDto): Promise<void| ErrorViewType> {
+
+        const passwordHash = await this.getPasswordHash(data.password);
 
         const newUser: UserDBType = {
-            userName: data.login,
+            login: data.login,
             email: data.email,
             passwordHash,
-            passwordSalt
+            createdAt: new Date()
         }
 
         return this.usersRepository.createUser(newUser);
-
-
     }
 
-    async _generateHash(password: string, salt: string): Promise<string> {
-        return await bcrypt.hash(password, salt);
+    async deleteUser(userId: ObjectId): Promise<void> {
+        return this.usersRepository.deleteUser(userId);
+    }
+
+    public async getPasswordHash(password: string): Promise<string> {
+        const passwordSalt = await bcrypt.genSalt(5);
+        return await bcrypt.hash(password, passwordSalt);
     }
 }
 

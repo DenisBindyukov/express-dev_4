@@ -1,4 +1,9 @@
-export type PaginationQueryParamsType = {
+export interface PaginationUsersQueryParamsType extends PaginationQueryParamsType {
+    searchLoginTerm?: string
+    searchEmailTerm?: string
+}
+
+export interface PaginationQueryParamsType  {
     pageNumber?: number
     pageSize?: number
     sortBy?: string

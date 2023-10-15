@@ -7,7 +7,7 @@ import {DEFAULT_SORT_FIELD} from "../../../routs/blogs/types/constants";
 import {paginationHandler} from "../../../utils/paginationHandler";
 
 
-class PostsQueryRepositories {
+class PostsQueryRepository {
     constructor(private readonly postsCollection: Collection<PostDBType>) {
     }
 
@@ -56,4 +56,4 @@ class PostsQueryRepositories {
     }
 }
 
-export default new PostsQueryRepositories(postsCollection)
+export default new PostsQueryRepository(postsCollection)
